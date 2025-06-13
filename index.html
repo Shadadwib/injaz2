@@ -1,0 +1,1098 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>انجاز الإنمائية التجارية</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f8f8;
+            color: #333;
+        }
+        .header-bg {
+            background-color: #1a202c; /* Dark navy for header */
+        }
+        .btn-primary {
+            background-color: #007bff; /* Blue for primary actions */
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
+            display: inline-flex; /* Use flex for icon and text alignment */
+            align-items: center;
+            justify-content: center;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+        .nav-link {
+            color: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
+        }
+        .nav-link:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        .card {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+        }
+        .section-heading {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #1a202c;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        .footer-bg {
+            background-color: #1a202c;
+            color: white;
+        }
+        /* Floating Buttons */
+        .whatsapp-button, .chatbot-button {
+            position: fixed;
+            padding: 15px;
+            border-radius: 50%;
+            font-size: 2rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            transition: background-color 0.3s ease;
+            cursor: pointer;
+        }
+        .whatsapp-button {
+            bottom: 20px;
+            right: 20px;
+            background-color: #25d366;
+            color: white;
+        }
+        .whatsapp-button:hover {
+            background-color: #128c7e;
+        }
+        .chatbot-button {
+            bottom: 90px;
+            right: 20px;
+            background-color: #8A2BE2; /* A nice purple */
+            color: white;
+        }
+        .chatbot-button:hover {
+            background-color: #6A1AA5;
+        }
+
+        /* Mobile menu specific styles */
+        @media (max-width: 768px) {
+            .mobile-menu {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+                background-color: #1a202c;
+                position: absolute;
+                top: 80px; /* Adjust based on header height */
+                left: 0;
+                padding: 1rem 0;
+                z-index: 999;
+            }
+            .mobile-menu.active {
+                display: flex;
+            }
+            .mobile-menu .nav-link {
+                width: 100%;
+                text-align: center;
+                padding: 15px 0;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            }
+            .mobile-menu .nav-link:last-child {
+                border-bottom: none;
+            }
+        }
+
+        /* Page Display Logic */
+        section {
+            display: none;
+        }
+        section.active-main-section {
+            display: block;
+        }
+        section.active-detail-section {
+            display: block;
+        }
+
+        /* Chatbot Modal Styles */
+        .chatbot-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            display: none; /* Hidden by default */
+        }
+        .chatbot-modal-overlay.active {
+            display: flex;
+        }
+        .chatbot-modal {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+            width: 90%;
+            max-width: 450px;
+            height: 80%;
+            max-height: 600px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .chat-header {
+            background-color: #1a202c;
+            color: white;
+            padding: 1rem;
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+        }
+        .chat-messages {
+            flex-grow: 1;
+            padding: 1rem;
+            overflow-y: auto;
+            background-color: #f0f2f5;
+        }
+        .chat-message {
+            margin-bottom: 0.75rem;
+            padding: 0.6rem 0.8rem;
+            border-radius: 10px;
+            max-width: 80%;
+            word-wrap: break-word;
+        }
+        .chat-message.user {
+            background-color: #007bff;
+            color: white;
+            margin-left: auto;
+            border-bottom-right-radius: 2px;
+        }
+        .chat-message.bot {
+            background-color: #e2e8f0;
+            color: #333;
+            margin-right: auto;
+            border-bottom-left-radius: 2px;
+        }
+        .chat-input-area {
+            display: flex;
+            padding: 1rem;
+            border-top: 1px solid #e2e8f0;
+        }
+        .chat-input {
+            flex-grow: 1;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 0.75rem;
+            margin-left: 0.5rem; /* For send button spacing */
+        }
+        .send-button {
+            background-color: #007bff;
+            color: white;
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .send-button:hover {
+            background-color: #0056b3;
+        }
+        .loading-indicator {
+            display: none;
+            text-align: center;
+            padding: 0.5rem;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        .loading-indicator.active {
+            display: block;
+        }
+
+        /* Custom Logo Styling */
+        .company-logo-container {
+            display: flex;
+            align-items: center;
+            font-weight: 700;
+            color: white;
+        }
+        .company-logo-text {
+            font-size: 2rem; /* Base font size */
+            background: linear-gradient(90deg, #00C6FF 0%, #0072FF 100%); /* Blue to darker blue */
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-fill-color: transparent;
+            filter: drop-shadow(0 2px 2px rgba(0,0,0,0.3)); /* Soft shadow for 3D effect */
+            margin-right: 0.5rem; /* Space between icon and text */
+        }
+        .company-logo-icon-svg {
+            width: 2rem; /* h-8 */
+            height: 2rem; /* w-8 */
+            filter: drop-shadow(0 1px 1px rgba(0,0,0,0.2));
+        }
+
+        /* Adjust for mobile smaller logo size */
+        @media (max-width: 768px) {
+            .company-logo-container {
+                font-size: 1.75rem;
+            }
+            .company-logo-text {
+                font-size: 1.75rem;
+            }
+            .company-logo-icon-svg {
+                width: 1.5rem;
+                height: 1.5rem;
+            }
+        }
+
+        /* Gradient for specific SVG icons in buttons */
+        .back-button-svg-container {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .back-button-svg {
+            width: 20px; /* Specific size for this button icon */
+            height: 20px;
+            margin-right: 0.5rem; /* Space before text for RTL */
+            transform: scaleX(-1); /* Flip arrow for RTL "back" direction */
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating Buttons -->
+    <a href="https://wa.me/966553354577" target="_blank" class="whatsapp-button">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+    <div id="chatbot-button" class="chatbot-button">
+        <i class="fas fa-robot"></i>
+    </div>
+
+    <!-- Chatbot Modal -->
+    <div id="chatbot-modal-overlay" class="chatbot-modal-overlay">
+        <div class="chatbot-modal">
+            <div class="chat-header">
+                <span>بوت انجاز الإنمائية للمساعدة</span>
+                <button id="close-chatbot" class="text-white text-xl focus:outline-none">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div id="chat-messages" class="chat-messages">
+                <!-- Chat messages will be appended here -->
+                <div class="chat-message bot">مرحباً! كيف يمكنني مساعدتك اليوم؟</div>
+            </div>
+            <div id="loading-indicator" class="loading-indicator">الروبوت يفكر...</div>
+            <div class="chat-input-area">
+                <input type="text" id="chat-input" class="chat-input" placeholder="اكتب رسالتك هنا...">
+                <button id="send-chat" class="send-button">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header Section -->
+    <header class="header-bg shadow-md">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <!-- Custom Logo (SVG Icon + Text) -->
+            <div class="company-logo-container">
+                <a href="#home" class="navigate-link flex items-center" data-target-section="home">
+                    <!-- SVG Icon for Injaz Logo -->
+                    <svg class="company-logo-icon-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zM12 20c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" fill="url(#logo-gradient-main)"/>
+                        <path d="M9 12l2 2 4-4" stroke="url(#logo-gradient-line)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <defs>
+                            <linearGradient id="logo-gradient-main" x1="2" y1="2" x2="22" y2="22" gradientUnits="userSpaceOnUse">
+                                <stop stop-color="#00C6FF"/>
+                                <stop offset="1" stop-color="#0072FF"/>
+                            </linearGradient>
+                            <linearGradient id="logo-gradient-line" x1="9" y1="12" x2="15" y2="8" gradientUnits="userSpaceOnUse">
+                                <stop stop-color="#72FFFF"/>
+                                <stop offset="1" stop-color="#00C6FF"/>
+                            </linearGradient>
+                            <!-- Global gradient for buttons -->
+                            <linearGradient id="button-gradient" x1="0" y1="0" x2="1" y2="1" gradientUnits="objectBoundingBox">
+                                <stop stop-color="#00C6FF"/>
+                                <stop offset="1" stop-color="#0072FF"/>
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                    <span class="company-logo-text">Injaz</span>
+                </a>
+            </div>
+
+            <!-- Desktop Navigation -->
+            <nav class="hidden md:flex space-x-6">
+                <a href="#home" class="nav-link navigate-link" data-target-section="home">الرئيسية</a>
+                <a href="#products" class="nav-link navigate-link" data-target-section="products">المنتجات</a>
+                <a href="#services" class="nav-link navigate-link" data-target-section="services">الخدمات</a>
+                <a href="#about" class="nav-link navigate-link" data-target-section="about">عن الشركة</a>
+                <a href="#contact" class="nav-link navigate-link" data-target-section="contact">اتصل بنا</a>
+            </nav>
+
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-button" class="text-white text-3xl md:hidden focus:outline-none">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Menu -->
+        <nav id="mobile-menu" class="mobile-menu md:hidden">
+            <a href="#home" class="nav-link navigate-link" data-target-section="home">الرئيسية</a>
+            <a href="#products" class="nav-link navigate-link" data-target-section="products">المنتجات</a>
+            <a href="#services" class="nav-link navigate-link" data-target-section="services">الخدمات</a>
+            <a href="#about" class="nav-link navigate-link" data-target-section="about">عن الشركة</a>
+            <a href="#contact" class="nav-link navigate-link" data-target-section="contact">اتصل بنا</a>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Home Section -->
+        <section id="home" class="main-content-section relative bg-gradient-to-r from-gray-900 to-gray-700 text-white py-20 md:py-32 overflow-hidden">
+            <!-- Image URL from placehold.co -->
+            <div class="absolute inset-0 bg-cover bg-center opacity-30" style="background-image: url('https://placehold.co/1920x1080/2C3E50/EAECEE?text=Integrated+Communication+Solutions'); background-color: #333;"></div>
+            <div class="container mx-auto px-6 relative z-10 text-center">
+                <h1 class="text-4xl md:text-6xl font-bold mb-6 leading-tight">
+                    حلول الاتصالات والأنظمة الأمنية المتكاملة
+                </h1>
+                <p class="text-lg md:text-xl mb-10 max-w-3xl mx-auto">
+                    نقدم أحدث التقنيات وأفضل الحلول للأفراد والشركات في مجال الكاميرات وأنظمة المراقبة ومعدات الاتصالات السلكية واللاسلكية.
+                </p>
+                <a href="#products" class="btn-primary text-lg navigate-link" data-target-section="products">استكشف منتجاتنا <i class="fas fa-arrow-left mr-2"></i></a>
+            </div>
+        </section>
+
+        <!-- Products Section (Main overview of product categories) -->
+        <section id="products" class="main-content-section py-16 md:py-24 bg-gray-100">
+            <div class="container mx-auto px-6">
+                <h2 class="section-heading">منتجاتنا</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Product Category 1: Security Cameras -->
+                    <div class="card">
+                        <img src="https://placehold.co/600x400/2a9d8f/ffffff?text=Security+Cameras" alt="كاميرات مراقبة" class="w-full h-48 object-cover rounded-t-lg">
+                        <div class="p-6">
+                            <h3 class="text-2xl font-semibold mb-3">كاميرات المراقبة والأنظمة الأمنية</h3>
+                            <p class="text-gray-600 mb-4">مجموعة واسعة من كاميرات المراقبة عالية الدقة، أنظمة DVR/NVR، وأجهزة الإنذار لحماية ممتلكاتك.</p>
+                            <a href="#security-cameras-details" class="text-blue-600 hover:underline navigate-link" data-target-section="security-cameras-details">عرض المزيد <i class="fas fa-chevron-left text-sm mr-1"></i></a>
+                        </div>
+                    </div>
+
+                    <!-- Product Category 2: Wireless Communication -->
+                    <div class="card">
+                        <img src="https://placehold.co/600x400/e9c46a/ffffff?text=Wireless+Equipment" alt="معدات لاسلكية" class="w-full h-48 object-cover rounded-t-lg">
+                        <div class="p-6">
+                            <h3 class="text-2xl font-semibold mb-3">معدات الاتصالات اللاسلكية</h3>
+                            <p class="text-gray-600 mb-4">أجهزة إرسال واستقبال لاسلكية، هوائيات، محطات قاعدية، وحلول شبكات لاسلكية للشركات.</p>
+                            <a href="#wireless-communication-details" class="text-blue-600 hover:underline navigate-link" data-target-section="wireless-communication-details">عرض المزيد <i class="fas fa-chevron-left text-sm mr-1"></i></a>
+                        </div>
+                    </div>
+
+                    <!-- Product Category 3: Wired Communication -->
+                    <div class="card">
+                        <img src="https://placehold.co/600x400/f4a261/ffffff?text=Wired+Infrastructure" alt="معدات سلكية" class="w-full h-48 object-cover rounded-t-lg">
+                        <div class="p-6">
+                            <h3 class="text-2xl font-semibold mb-3">معدات الاتصالات السلكية</h3>
+                            <p class="text-gray-600 mb-4">حلول الكابلات الشبكية، أجهزة التوجيه (Routers)، المحولات (Switches)، وأنظمة الألياف البصرية.</p>
+                            <a href="#wired-communication-details" class="text-blue-600 hover:underline navigate-link" data-target-section="wired-communication-details">عرض المزيد <i class="fas fa-chevron-left text-sm mr-1"></i></a>
+                        </div>
+                    </div>
+
+                    <!-- Product Category 4: Communication Towers -->
+                    <div class="card">
+                        <img src="https://placehold.co/600x400/264653/ffffff?text=Comms+Towers" alt="أبراج اتصالات" class="w-full h-48 object-cover rounded-t-lg">
+                        <div class="p-6">
+                            <h3 class="text-2xl font-semibold mb-3">أبراج الاتصالات وملحقاتها</h3>
+                            <p class="text-gray-600 mb-4">توريد وتركيب وصيانة أبراج الاتصالات بمختلف الأحجام والأنواع.</p>
+                            <a href="#communication-towers-details" class="text-blue-600 hover:underline navigate-link" data-target-section="communication-towers-details">عرض المزيد <i class="fas fa-chevron-left text-sm mr-1"></i></a>
+                        </div>
+                    </div>
+
+                    <!-- Product Category 5: Access Control -->
+                    <div class="card">
+                        <img src="https://placehold.co/600x400/e76f51/ffffff?text=Access+Control" alt="أنظمة تحكم بالدخول" class="w-full h-48 object-cover rounded-t-lg">
+                        <div class="p-6">
+                            <h3 class="text-2xl font-semibold mb-3">أنظمة التحكم بالدخول</h3>
+                            <p class="text-gray-600 mb-4">حلول متقدمة للتحكم بالدخول، البصمة، التعرف على الوجه، والبطاقات الذكية للمنشآت.</p>
+                            <a href="#access-control-details" class="text-blue-600 hover:underline navigate-link" data-target-section="access-control-details">عرض المزيد <i class="fas fa-chevron-left text-sm mr-1"></i></a>
+                        </div>
+                    </div>
+
+                    <!-- Product Category 6: Intercom Systems -->
+                    <div class="card">
+                        <img src="https://placehold.co/600x400/d5bdaf/333333?text=Intercom+Sys" alt="أنظمة إنتركوم" class="w-full h-48 object-cover rounded-t-lg">
+                        <div class="p-6">
+                            <h3 class="text-2xl font-semibold mb-3">أنظمة الإنتركوم</h3>
+                            <p class="text-gray-600 mb-4">أنظمة إنتركوم صوتية ومرئية للمباني السكنية والتجارية.</p>
+                            <a href="#intercom-systems-details" class="text-blue-600 hover:underline navigate-link" data-target-section="intercom-systems-details">عرض المزيد <i class="fas fa-chevron-left text-sm mr-1"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Services Section -->
+        <section id="services" class="main-content-section py-16 md:py-24 bg-white">
+            <div class="container mx-auto px-6">
+                <h2 class="section-heading">خدماتنا</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                    <div class="p-6 card">
+                        <div class="text-5xl text-blue-600 mb-4">
+                            <i class="fas fa-cogs"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-3">خدمات التركيب الاحترافية</h3>
+                        <p class="text-gray-600">فريق متخصص لتركيب جميع أنظمة الاتصالات والمراقبة بأعلى معايير الجودة.</p>
+                    </div>
+                    <div class="p-6 card">
+                        <div class="text-5xl text-blue-600 mb-4">
+                            <i class="fas fa-wrench"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-3">صيانة ودعم فني</h3>
+                        <p class="text-gray-600">خدمات صيانة دورية وطارئة لضمان استمرارية عمل أنظمتك بكفاءة.</p>
+                    </div>
+                    <div class="p-6 card">
+                        <div class="text-5xl text-blue-600 mb-4">
+                            <i class="fas fa-headset"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-3">استشارات وحلول متكاملة</h3>
+                        <p class="text-gray-600">نقدم استشارات فنية لمساعدتك في اختيار أفضل الحلول التي تناسب احتياجاتك.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Why Choose Us Section -->
+        <section id="why-choose-us" class="main-content-section py-16 md:py-24 bg-gray-100">
+            <div class="container mx-auto px-6">
+                <h2 class="section-heading">لماذا تختارنا؟</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                    <div class="space-y-6">
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 text-blue-600 text-3xl mt-1 ml-4">
+                                <i class="fas fa-tags"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-semibold mb-2">أسعار تنافسية</h3>
+                                <p class="text-gray-700">نقدم أحدث الحلول والتقنيات بأسعار تنافسية تلائم ميزانيتك.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 text-blue-600 text-3xl mt-1 ml-4">
+                                <i class="fas fa-handshake"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-semibold mb-2">خدمات ما بعد البيع</h3>
+                                <p class="text-gray-700">نحرص على تقديم أفضل خدمات الدعم والصيانة بعد البيع لضمان رضاك.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 text-blue-600 text-3xl mt-1 ml-4">
+                                <i class="fas fa-award"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-semibold mb-2">جودة وموثوقية</h3>
+                                <p class="text-gray-700">نلتزم بتوفير منتجات عالية الجودة من أفضل الماركات العالمية لضمان الأداء والموثوقية.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 text-blue-600 text-3xl mt-1 ml-4">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-semibold mb-2">خدمة الأفراد والشركات</h3>
+                                <p class="text-gray-700">نخدم جميع القطاعات من الأفراد والمؤسسات والشركات بمختلف أحجامها.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-8 md:mt-0">
+                        <img src="https://placehold.co/600x400/34495E/F0F2F5?text=Why+Choose+Us" alt="لماذا تختارنا" class="rounded-lg shadow-lg w-full h-auto">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Us Section -->
+        <section id="about" class="main-content-section py-16 md:py-24 bg-white">
+            <div class="container mx-auto px-6">
+                <h2 class="section-heading">عن الشركة</h2>
+                <div class="flex flex-col md:flex-row items-center gap-8">
+                    <div class="md:w-1/2">
+                        <img src="https://placehold.co/600x400/1ABC9C/FFFFFF?text=About+Us+Team" alt="فريق العمل" class="rounded-lg shadow-lg w-full h-auto">
+                    </div>
+                    <div class="md:w-1/2 text-lg text-gray-700 leading-relaxed">
+                        <p class="mb-4">تأسست <span class="font-semibold text-blue-600">انجاز الإنمائية التجارية</span> لتقديم حلول متكاملة في مجال الاتصالات السلكية واللاسلكية وأنظمة المراقبة الأمنية. نحن نؤمن بأهمية توفير بيئة آمنة ومتصلة لعملائنا، سواء كانوا أفرادًا أو مؤسسات.</p>
+                        <p class="mb-4">رقم السجل التجاري: <span class="font-semibold text-blue-600">4030254226</span>. نفخر بتقديم أحدث التقنيات وأجود المنتجات من كبرى الشركات العالمية، مدعومة بفريق من المهندسين والفنيين ذوي الخبرة العالية في التصميم، التركيب، والصيانة.</p>
+                        <p>هدفنا هو بناء علاقات طويلة الأمد مع عملائنا من خلال تقديم خدمة عملاء استثنائية وحلول موثوقة تلبي وتتجاوز توقعاتهم.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Us Section -->
+        <section id="contact" class="main-content-section py-16 md:py-24 bg-gray-100">
+            <div class="container mx-auto px-6">
+                <h2 class="section-heading">اتصل بنا</h2>
+                <div class="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-lg grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Contact Form -->
+                    <div>
+                        <h3 class="text-2xl font-semibold mb-6 text-gray-800">أرسل لنا رسالة</h3>
+                        <form class="space-y-4">
+                            <div>
+                                <label for="name" class="block text-gray-700 text-sm font-bold mb-2">الاسم:</label>
+                                <input type="text" id="name" name="name" class="shadow appearance-none border rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="اسمك الكريم">
+                            </div>
+                            <div>
+                                <label for="email" class="block text-gray-700 text-sm font-bold mb-2">البريد الإلكتروني:</label>
+                                <input type="email" id="email" name="email" class="shadow appearance-none border rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="بريدك الإلكتروني">
+                            </div>
+                            <div>
+                                <label for="subject" class="block text-gray-700 text-sm font-bold mb-2">الموضوع:</label>
+                                <input type="text" id="subject" name="subject" class="shadow appearance-none border rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="موضوع الرسالة">
+                            </div>
+                            <div>
+                                <label for="message" class="block text-gray-700 text-sm font-bold mb-2">الرسالة:</label>
+                                <textarea id="message" name="message" rows="5" class="shadow appearance-none border rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="اكتب رسالتك هنا..."></textarea>
+                            </div>
+                            <button type="submit" class="btn-primary w-full md:w-auto">إرسال الرسالة</button>
+                        </form>
+                    </div>
+
+                    <!-- Contact Info -->
+                    <div>
+                        <h3 class="text-2xl font-semibold mb-6 text-gray-800">معلومات الاتصال</h3>
+                        <div class="space-y-4 text-gray-700 text-lg">
+                            <p><i class="fas fa-map-marker-alt text-blue-600 mr-2"></i> الرياض، المملكة العربية السعودية - العنوان: ٧٩٢٠، خالد بن الوليد الشرقية، ٢٦٤٠</p>
+                            <p><i class="fas fa-phone-alt text-blue-600 mr-2"></i> +966 55 335 4577</p>
+                            <p><i class="fas fa-envelope text-blue-600 mr-2"></i> wenk_ss@hotmail.com</p>
+                            <p><i class="fas fa-globe text-blue-600 mr-2"></i> www.injaz.com (عنوان مؤقت)</p>
+                            <div class="mt-6">
+                                <h4 class="text-xl font-semibold mb-3">تابعنا على:</h4>
+                                <div class="flex space-x-4 text-3xl">
+                                    <a href="#" class="text-blue-600 hover:text-blue-800 transition duration-300"><i class="fab fa-facebook"></i></a>
+                                    <a href="#" class="text-blue-600 hover:text-blue-800 transition duration-300"><i class="fab fa-twitter"></i></a>
+                                    <a href="#" class="text-blue-600 hover:text-blue-800 transition duration-300"><i class="fab fa-linkedin"></i></a>
+                                    <a href="#" class="text-blue-600 hover:text-blue-800 transition duration-300"><i class="fab fa-instagram"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Product Detail Pages (These are separate sections) -->
+        <!-- Security Cameras Details -->
+        <section id="security-cameras-details" class="detail-content-section py-16 md:py-24 bg-gray-100">
+            <div class="container mx-auto px-6">
+                <h2 class="section-heading">كاميرات المراقبة والأنظمة الأمنية</h2>
+                <button class="btn-primary mb-8 navigate-link" data-target-section="products">
+                    <span class="back-button-svg-container">
+                        <svg class="back-button-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="url(#button-gradient)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </span>
+                    العودة للمنتجات
+                </button>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="card p-6 text-center">
+                        <img src="https://placehold.co/400x300/3498db/ffffff?text=Outdoor+Dome+Camera" alt="كاميرا قبة خارجية" class="w-full h-48 object-cover rounded-md mb-4">
+                        <h3 class="text-xl font-semibold mb-2">كاميرا قبة خارجية بدقة 4K</h3>
+                        <p class="text-gray-600 mb-3">مقاومة للعوامل الجوية، رؤية ليلية، ودعم POE.</p>
+                        <p class="text-blue-700 font-bold text-lg">SAR 750</p>
+                        <button class="btn-primary mt-4">طلب عرض سعر</button>
+                    </div>
+                    <div class="card p-6 text-center">
+                        <img src="https://placehold.co/400x300/2ecc71/ffffff?text=PTZ+Camera" alt="كاميرا PTZ" class="w-full h-48 object-cover rounded-md mb-4">
+                        <h3 class="text-xl font-semibold mb-2">كاميرا PTZ متحركة 360 درجة</h3>
+                        <p class="text-gray-600 mb-3">تحكم عن بعد، تتبع ذكي، وتقريب بصري عالي.</p>
+                        <p class="text-blue-700 font-bold text-lg">SAR 1200</p>
+                        <button class="btn-primary mt-4">طلب عرض سعر</button>
+                    </div>
+                    <div class="card p-6 text-center">
+                        <img src="https://placehold.co/400x300/f1c40f/333333?text=NVR+System" alt="نظام NVR" class="w-full h-48 object-cover rounded-md mb-4">
+                        <h3 class="text-xl font-semibold mb-2">نظام تسجيل NVR سعة 8 قنوات</h3>
+                        <p class="text-gray-600 mb-3">دعم حتى 8 كاميرات، تخزين سحابي، وسهولة الوصول عن بعد.</p>
+                        <p class="text-blue-700 font-bold text-lg">SAR 900</p>
+                        <button class="btn-primary mt-4">طلب عرض سعر</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Wireless Communication Details -->
+        <section id="wireless-communication-details" class="detail-content-section py-16 md:py-24 bg-gray-100">
+            <div class="container mx-auto px-6">
+                <h2 class="section-heading">معدات الاتصالات اللاسلكية</h2>
+                <button class="btn-primary mb-8 navigate-link" data-target-section="products">
+                     <span class="back-button-svg-container">
+                        <svg class="back-button-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="url(#button-gradient)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </span>
+                    العودة للمنتجات
+                </button>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="card p-6 text-center">
+                        <img src="https://placehold.co/400x300/9b59b6/ffffff?text=Wireless+AP" alt="نقطة وصول لاسلكية" class="w-full h-48 object-cover rounded-md mb-4">
+                        <h3 class="text-xl font-semibold mb-2">نقطة وصول لاسلكية خارجية (Outdoor AP)</h3>
+                        <p class="text-gray-600 mb-3">تغطية واسعة للمساحات المفتوحة، مقاومة للماء، ودعم MIMO.</p>
+                        <p class="text-blue-700 font-bold text-lg">SAR 600</p>
+                        <button class="btn-primary mt-4">طلب عرض سعر</button>
+                    </div>
+                    <div class="card p-6 text-center">
+                        <img src="https://placehold.co/400x300/e67e22/ffffff?text=Outdoor+Antenna" alt="هوائي خارجي" class="w-full h-48 object-cover rounded-md mb-4">
+                        <h3 class="text-xl font-semibold mb-2">هوائي اتجاهي عالي الكسب</h3>
+                        <p class="text-gray-600 mb-3">مثالي للوصلات اللاسلكية بعيدة المدى، سهل التركيب.</p>
+                        <p class="text-blue-700 font-bold text-lg">SAR 450</p>
+                        <button class="btn-primary mt-4">طلب عرض سعر</button>
+                    </div>
+                    <div class="card p-6 text-center">
+                        <img src="https://placehold.co/400x300/1abc9c/ffffff?text=Radio+Transceiver" alt="جهاز إرسال واستقبال لاسلكي" class="w-full h-48 object-cover rounded-md mb-4">
+                        <h3 class="text-xl font-semibold mb-2">جهاز إرسال واستقبال لاسلكي احترافي</h3>
+                        <p class="text-gray-600 mb-3">قوة إرسال عالية، ترددات متعددة، ومناسب للبيئات الصعبة.</p>
+                        <p class="text-blue-700 font-bold text-lg">SAR 1500</p>
+                        <button class="btn-primary mt-4">طلب عرض سعر</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Wired Communication Details -->
+        <section id="wired-communication-details" class="detail-content-section py-16 md:py-24 bg-gray-100">
+            <div class="container mx-auto px-6">
+                <h2 class="section-heading">معدات الاتصالات السلكية</h2>
+                <button class="btn-primary mb-8 navigate-link" data-target-section="products">
+                     <span class="back-button-svg-container">
+                        <svg class="back-button-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="url(#button-gradient)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </span>
+                    العودة للمنتجات
+                </button>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="card p-6 text-center">
+                        <img src="https://placehold.co/400x300/c0392b/ffffff?text=Fiber+Optic+Cable" alt="كابل ألياف بصرية" class="w-full h-48 object-cover rounded-md mb-4">
+                        <h3 class="text-xl font-semibold mb-2">كابل ألياف بصرية متعدد الأوضاع</h3>
+                        <p class="text-gray-600 mb-3">سرعات نقل بيانات عالية، مقاومة للتداخل، ومتوفر بأطوال مختلفة.</p>
+                        <p class="text-blue-700 font-bold text-lg">SAR 15/متر</p>
+                        <button class="btn-primary mt-4">طلب عرض سعر</button>
+                    </div>
+                    <div class="card p-6 text-center">
+                        <img src="https://placehold.co/400x300/34495e/ffffff?text=Network+Switch" alt="مفتاح شبكة" class="w-full h-48 object-cover rounded-md mb-4">
+                        <h3 class="text-xl font-semibold mb-2">مفتاح شبكة (Switch) 24 منفذ جيجابت</h3>
+                        <p class="text-gray-600 mb-3">أداء عالي، إدارة ذكية، ودعم VLAN.</p>
+                        <p class="text-blue-700 font-bold text-lg">SAR 850</p>
+                        <button class="btn-primary mt-4">طلب عرض سعر</button>
+                    </div>
+                    <div class="card p-6 text-center">
+                        <img src="https://placehold.co/400x300/7f8c8d/ffffff?text=Industrial+Router" alt="جهاز توجيه صناعي" class="w-full h-48 object-cover rounded-md mb-4">
+                        <h3 class="text-xl font-semibold mb-2">جهاز توجيه (Router) صناعي متين</h3>
+                        <p class="text-gray-600 mb-3">مصمم للبيئات القاسية، أمان متقدم، ودعم VPN.</p>
+                        <p class="text-blue-700 font-bold text-lg">SAR 1100</p>
+                        <button class="btn-primary mt-4">طلب عرض سعر</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Communication Towers Details -->
+        <section id="communication-towers-details" class="detail-content-section py-16 md:py-24 bg-gray-100">
+            <div class="container mx-auto px-6">
+                <h2 class="section-heading">أبراج الاتصالات وملحقاتها</h2>
+                <button class="btn-primary mb-8 navigate-link" data-target-section="products">
+                     <span class="back-button-svg-container">
+                        <svg class="back-button-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="url(#button-gradient)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </span>
+                    العودة للمنتجات
+                </button>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="card p-6 text-center">
+                        <img src="https://placehold.co/400x300/8e44ad/ffffff?text=Self-Supporting+Tower" alt="برج اتصالات ذاتي الدعم" class="w-full h-48 object-cover rounded-md mb-4">
+                        <h3 class="text-xl font-semibold mb-2">برج اتصالات ذاتي الدعم (40 متر)</h3>
+                        <p class="text-gray-600 mb-3">تصميم قوي، سهل التركيب، ومقاوم للرياح.</p>
+                        <p class="text-blue-700 font-bold text-lg">SAR 25000</p>
+                        <button class="btn-primary mt-4">طلب عرض سعر</button>
+                    </div>
+                    <div class="card p-6 text-center">
+                        <img src="https://placehold.co/400x300/27ae60/ffffff?text=Guyed+Mast" alt="سارية اتصالات مدعمة" class="w-full h-48 object-cover rounded-md mb-4">
+                        <h3 class="text-xl font-semibold mb-2">سارية اتصالات مدعمة (Guyed Mast) 30 متر</h3>
+                        <p class="text-gray-600 mb-3">حل اقتصادي، مناسب للمناطق ذات المساحة المحدودة.</p>
+                        <p class="text-blue-700 font-bold text-lg">SAR 18000</p>
+                        <button class="btn-primary mt-4">طلب عرض سعر</button>
+                    </div>
+                    <div class="card p-6 text-center">
+                        <img src="https://placehold.co/400x300/d35400/ffffff?text=Tower+Accessories" alt="ملحقات أبراج" class="w-full h-48 object-cover rounded-md mb-4">
+                        <h3 class="text-xl font-semibold mb-2">ملحقات أبراج الاتصالات (إضاءة، سلالم)</h3>
+                        <p class="text-gray-600 mb-3">جميع الملحقات الأساسية لتركيب وصيانة الأبراج بأمان.</p>
+                        <p class="text-blue-700 font-bold text-lg">SAR 800</p>
+                        <button class="btn-primary mt-4">طلب عرض سعر</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Access Control Details -->
+        <section id="access-control-details" class="detail-content-section py-16 md:py-24 bg-gray-100">
+            <div class="container mx-auto px-6">
+                <h2 class="section-heading">أنظمة التحكم بالدخول</h2>
+                <button class="btn-primary mb-8 navigate-link" data-target-section="products">
+                     <span class="back-button-svg-container">
+                        <svg class="back-button-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="url(#button-gradient)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </span>
+                    العودة للمنتجات
+                </button>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="card p-6 text-center">
+                        <img src="https://placehold.co/400x300/f39c12/ffffff?text=Fingerprint+Reader" alt="قارئ بصمات الأصابع" class="w-full h-48 object-cover rounded-md mb-4">
+                        <h3 class="text-xl font-semibold mb-2">قارئ بصمات الأصابع للمكاتب</h3>
+                        <p class="text-gray-600 mb-3">دقيق وسريع، سعة تخزين كبيرة للمستخدمين، وتوصيل شبكي.</p>
+                        <p class="text-blue-700 font-bold text-lg">SAR 550</p>
+                        <button class="btn-primary mt-4">طلب عرض سعر</button>
+                    </div>
+                    <div class="card p-6 text-center">
+                        <img src="https://placehold.co/400x300/2980b9/ffffff?text=Face+Recognition+Terminal" alt="جهاز التعرف على الوجه" class="w-full h-48 object-cover rounded-md mb-4">
+                        <h3 class="text-xl font-semibold mb-2">جهاز التعرف على الوجه مع قياس الحرارة</h3>
+                        <p class="text-gray-600 mb-3">حل متكامل للدخول الآمن مع الكشف الصحي.</p>
+                        <p class="text-blue-700 font-bold text-lg">SAR 950</p>
+                        <button class="btn-primary mt-4">طلب عرض سعر</button>
+                    </div>
+                    <div class="card p-6 text-center">
+                        <img src="https://placehold.co/400x300/c0392b/ffffff?text=RFID+Reader" alt="قارئ بطاقات RFID" class="w-full h-48 object-cover rounded-md mb-4">
+                        <h3 class="text-xl font-semibold mb-2">قارئ بطاقات RFID ذكي</h3>
+                        <p class="text-gray-600 mb-3">سهولة الاستخدام، متوافق مع أنظمة التحكم المختلفة.</p>
+                        <p class="text-blue-700 font-bold text-lg">SAR 300</p>
+                        <button class="btn-primary mt-4">طلب عرض سعر</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Intercom Systems Details -->
+        <section id="intercom-systems-details" class="detail-content-section py-16 md:py-24 bg-gray-100">
+            <div class="container mx-auto px-6">
+                <h2 class="section-heading">أنظمة الإنتركوم</h2>
+                <button class="btn-primary mb-8 navigate-link" data-target-section="products">
+                     <span class="back-button-svg-container">
+                        <svg class="back-button-svg" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="url(#button-gradient)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </span>
+                    العودة للمنتجات
+                </button>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="card p-6 text-center">
+                        <img src="https://placehold.co/400x300/16a085/ffffff?text=Video+Intercom" alt="إنتركوم فيديو" class="w-full h-48 object-cover rounded-md mb-4">
+                        <h3 class="text-xl font-semibold mb-2">نظام إنتركوم فيديو بشاشة داخلية</h3>
+                        <p class="text-gray-600 mb-3">رؤية واضحة للزوار، تسجيل فيديو، ودعم فتح الباب.</p>
+                        <p class="text-blue-700 font-bold text-lg">SAR 700</p>
+                        <button class="btn-primary mt-4">طلب عرض سعر</button>
+                    </div>
+                    <div class="card p-6 text-center">
+                        <img src="https://placehold.co/400x300/d35400/ffffff?text=Audio+Intercom" alt="إنتركوم صوتي" class="w-full h-48 object-cover rounded-md mb-4">
+                        <h3 class="text-xl font-semibold mb-2">نظام إنتركوم صوتي للمباني السكنية</h3>
+                        <p class="text-gray-600 mb-3">جودة صوت ممتازة، سهولة التركيب، وعملي للاستخدام اليومي.</p>
+                        <p class="text-blue-700 font-bold text-lg">SAR 350</p>
+                        <button class="btn-primary mt-4">طلب عرض سعر</button>
+                    </div>
+                    <div class="card p-6 text-center">
+                        <img src="https://placehold.co/400x300/8e44ad/ffffff?text=Multi-Tenant+Intercom" alt="إنتركوم متعدد المستأجرين" class="w-full h-48 object-cover rounded-md mb-4">
+                        <h3 class="text-xl font-semibold mb-2">نظام إنتركوم متعدد المستأجرين للفيلات</h3>
+                        <p class="text-gray-600 mb-3">دعم لعدة وحدات، لوحة مفاتيح خارجية، وإمكانية الاتصال بالهواتف.</p>
+                        <p class="text-blue-700 font-bold text-lg">SAR 1800</p>
+                        <button class="btn-primary mt-4">طلب عرض سعر</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer Section -->
+    <footer class="footer-bg py-8">
+        <div class="container mx-auto px-6 text-center text-sm">
+            <p>&copy; 2024 انجاز الإنمائية التجارية. جميع الحقوق محفوظة.</p>
+            <p class="mt-2">السجل التجاري: 4030254226</p>
+            <p class="mt-1">العنوان: الرياض، المملكة العربية السعودية - ٧٩٢٠، خالد بن الوليد الشرقية، ٢٦٤٠</p>
+        </div>
+    </footer>
+
+    <script>
+        // Store chat history for the chatbot
+        let chatHistory = [{ role: "model", parts: [{ text: "مرحباً! كيف يمكنني مساعدتك اليوم؟" }] }];
+
+        // Function to control the overall page view (main scrollable vs. specific detail page)
+        function setPageView(sectionId) {
+            const allSections = document.querySelectorAll('section');
+            const targetSection = document.getElementById(sectionId);
+
+            if (!targetSection) {
+                console.error('Target section not found:', sectionId);
+                return;
+            }
+
+            // Determine if the target section is a detail page or a main page section
+            const isDetailSection = targetSection.classList.contains('detail-content-section');
+
+            // Hide all sections first
+            allSections.forEach(sec => {
+                sec.classList.remove('active-main-section');
+                sec.classList.remove('active-detail-section');
+            });
+
+            if (isDetailSection) {
+                // If we are showing a detail page
+                targetSection.classList.add('active-detail-section');
+                // Scroll to the top of the newly active detail page
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+                // If we are showing a main page section (or returning to main view)
+                // All main sections are visible by default CSS if not in detail view
+                // We just need to activate the target main section to trigger smooth scroll
+                targetSection.classList.add('active-main-section'); // Activate for scrolling
+                targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+
+        // Event listener for all navigation links (main and "عرض المزيد")
+        document.querySelectorAll('.navigate-link').forEach(link => {
+            link.addEventListener('click', function (e) {
+                e.preventDefault(); // Prevent default anchor link behavior
+
+                const targetSectionId = this.dataset.targetSection;
+                const targetElement = document.getElementById(targetSectionId);
+
+                if (targetElement && targetElement.classList.contains('main-content-section')) {
+                    // If it's a main content section, handle as a scroll
+                    // First, ensure all detail sections are hidden
+                    document.querySelectorAll('.detail-content-section').forEach(sec => sec.classList.remove('active-detail-section'));
+                    // Then, show all main sections and scroll to target
+                    document.querySelectorAll('.main-content-section').forEach(sec => sec.classList.add('active-main-section'));
+                    targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    // Use replaceState for main navigation to avoid cluttering history with scrolls
+                    history.replaceState(null, '', '#' + targetSectionId);
+                } else if (targetElement && targetElement.classList.contains('detail-content-section')) {
+                    // If it's a detail content section, hide main sections and show only this detail section
+                    document.querySelectorAll('.main-content-section').forEach(sec => sec.classList.remove('active-main-section'));
+                    document.querySelectorAll('.detail-content-section').forEach(sec => sec.classList.remove('active-detail-section'));
+                    targetElement.classList.add('active-detail-section');
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    // Use pushState for detail pages as they are conceptually new "pages"
+                    history.pushState(null, '', '#' + targetSectionId);
+                }
+                
+                // Close mobile menu if open
+                const mobileMenu = document.getElementById('mobile-menu');
+                if (mobileMenu.classList.contains('active')) {
+                    mobileMenu.classList.remove('active');
+                }
+            });
+        });
+
+        // Mobile menu toggle functionality
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('active');
+        });
+
+        // Handle initial page load based on URL hash (if a specific section or detail page is linked)
+        window.addEventListener('load', () => {
+            const initialHash = window.location.hash.substring(1); // Get hash without '#'
+            if (initialHash) {
+                const targetElement = document.getElementById(initialHash);
+                if (targetElement) {
+                    if (targetElement.classList.contains('detail-content-section')) {
+                        // If it's a direct link to a detail page
+                        document.querySelectorAll('.main-content-section').forEach(sec => sec.classList.remove('active-main-section'));
+                        document.querySelectorAll('.detail-content-section').forEach(sec => sec.classList.remove('active-detail-section'));
+                        targetElement.classList.add('active-detail-section');
+                        window.scrollTo({ top: 0, behavior: 'auto' }); // Scroll instantly
+                    } else {
+                        // If it's a direct link to a main section
+                        document.querySelectorAll('section').forEach(sec => { // Hide all sections first
+                            sec.classList.remove('active-main-section');
+                            sec.classList.remove('active-detail-section');
+                        });
+                        document.querySelectorAll('.main-content-section').forEach(sec => sec.classList.add('active-main-section'));
+                        // Scroll to the specific main section
+                        targetElement.scrollIntoView({ behavior: 'auto', block: 'start' });
+                    }
+                } else {
+                    // Fallback to home if hash doesn't match any known ID
+                    document.querySelectorAll('section').forEach(sec => {
+                        sec.classList.remove('active-main-section');
+                        sec.classList.remove('active-detail-section');
+                    });
+                    document.querySelectorAll('.main-content-section').forEach(sec => sec.classList.add('active-main-section'));
+                    document.getElementById('home').scrollIntoView({ behavior: 'auto', block: 'start' });
+                }
+            } else {
+                // Default to home section if no hash in URL
+                document.querySelectorAll('section').forEach(sec => {
+                    sec.classList.remove('active-main-section');
+                    sec.classList.remove('active-detail-section');
+                });
+                document.querySelectorAll('.main-content-section').forEach(sec => sec.classList.add('active-main-section'));
+                document.getElementById('home').scrollIntoView({ behavior: 'auto', block: 'start' });
+            }
+        });
+
+        // Handle browser back/forward buttons (popstate event)
+        window.addEventListener('popstate', () => {
+            const currentHash = window.location.hash.substring(1);
+            if (currentHash) {
+                const targetElement = document.getElementById(currentHash);
+                if (targetElement) {
+                    document.querySelectorAll('section').forEach(sec => { // Hide all sections first
+                        sec.classList.remove('active-main-section');
+                        sec.classList.remove('active-detail-section');
+                    });
+
+                    if (targetElement.classList.contains('detail-content-section')) {
+                        // If returning to a detail page
+                        targetElement.classList.add('active-detail-section');
+                        window.scrollTo({ top: 0, behavior: 'auto' }); // Scroll to top instantly
+                    } else {
+                        // If returning to a main section
+                        document.querySelectorAll('.main-content-section').forEach(sec => sec.classList.add('active-main-section'));
+                        targetElement.scrollIntoView({ behavior: 'auto', block: 'start' });
+                    }
+                } else {
+                    // Fallback to home if hash is invalid or missing
+                    document.querySelectorAll('section').forEach(sec => {
+                        sec.classList.remove('active-main-section');
+                        sec.classList.remove('active-detail-section');
+                    });
+                    document.querySelectorAll('.main-content-section').forEach(sec => sec.classList.add('active-main-section'));
+                    document.getElementById('home').scrollIntoView({ behavior: 'auto', block: 'start' });
+                }
+            } else {
+                // Go to home if hash is empty (e.g., navigating back from a detail page to the root URL)
+                document.querySelectorAll('section').forEach(sec => {
+                    sec.classList.remove('active-main-section');
+                    sec.classList.remove('active-detail-section');
+                });
+                document.querySelectorAll('.main-content-section').forEach(sec => sec.classList.add('active-main-section'));
+                document.getElementById('home').scrollIntoView({ behavior: 'auto', block: 'start' });
+            }
+        });
+
+
+        // Chatbot functionality
+        const chatbotButton = document.getElementById('chatbot-button');
+        const chatbotModalOverlay = document.getElementById('chatbot-modal-overlay');
+        const closeChatbotButton = document.getElementById('close-chatbot');
+        const chatInput = document.getElementById('chat-input');
+        const sendChatButton = document.getElementById('send-chat');
+        const chatMessagesDiv = document.getElementById('chat-messages');
+        const loadingIndicator = document.getElementById('loading-indicator');
+
+        // Show chatbot modal
+        chatbotButton.addEventListener('click', () => {
+            chatbotModalOverlay.classList.add('active');
+            chatInput.focus(); // Focus input when modal opens
+        });
+
+        // Hide chatbot modal
+        closeChatbotButton.addEventListener('click', () => {
+            chatbotModalOverlay.classList.remove('active');
+        });
+
+        // Send message on button click
+        sendChatButton.addEventListener('click', sendMessage);
+        // Send message on Enter key press in input field
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+        // Function to send message to the chatbot
+        async function sendMessage() {
+            const userMessage = chatInput.value.trim();
+            if (userMessage === '') return; // Don't send empty messages
+
+            // Display user's message in the chat window
+            appendMessage(userMessage, 'user');
+            chatInput.value = ''; // Clear input field
+            chatMessagesDiv.scrollTop = chatMessagesDiv.scrollHeight; // Scroll to bottom of chat
+
+            // Add user message to chat history for context
+            chatHistory.push({ role: "user", parts: [{ text: userMessage }] });
+
+            loadingIndicator.classList.add('active'); // Show loading indicator
+
+            try {
+                // Prepare payload for Gemini API
+                const payload = { contents: chatHistory };
+                const apiKey = "AIzaSyAvHq4HNQxni75icNA9KVrsQflP_sZznNU"; // <--- !!! مفتاح API الخاص بك تم وضعه هنا !!!
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+                // Make the API call to Gemini
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const result = await response.json();
+                loadingIndicator.classList.remove('active'); // Hide loading indicator
+
+                // Process the API response
+                if (result.candidates && result.candidates.length > 0 &&
+                    result.candidates[0].content && result.candidates[0].content.parts &&
+                    result.candidates[0].content.parts.length > 0) {
+                    const botResponse = result.candidates[0].content.parts[0].text;
+                    appendMessage(botResponse, 'bot'); // Display bot's response
+                    chatHistory.push({ role: "model", parts: [{ text: botResponse }] }); // Add bot response to history
+                } else {
+                    console.error('Unexpected API response structure:', result);
+                    appendMessage('عذراً، حدث خطأ في التواصل مع البوت. يرجى المحاولة لاحقاً.', 'bot');
+                }
+            } catch (error) {
+                console.error('Error fetching from Gemini API:', error);
+                loadingIndicator.classList.remove('active'); // Hide loading indicator
+                appendMessage('عذراً، حدث خطأ في الشبكة أو الاتصال بالبوت. يرجى التحقق من اتصالك بالإنترنت والمحاولة مرة أخرى.', 'bot');
+            }
+            chatMessagesDiv.scrollTop = chatMessagesDiv.scrollHeight; // Scroll to bottom after bot response
+        }
+
+        // Helper function to append messages to the chat display
+        function appendMessage(text, sender) {
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add('chat-message', sender);
+            messageDiv.textContent = text;
+            chatMessagesDiv.appendChild(messageDiv);
+        }
+    </script>
+</body>
+</html>
